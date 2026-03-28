@@ -607,19 +607,29 @@ def stats():
         "update_time": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     })
 
-# ================== MAIN ==================
+# ================== MAIN (FIX CHUẨN) ==================
 
-if __name__ == "__main__":
-    # Khởi động worker nền
-    worker_thread = threading.Thread(target=background_worker, daemon=True)
+def start_background():
+    """Khởi động worker nền (dùng khi import từ server.py)"""
+    worker_thread = threading.Thread(
+        target=background_worker,
+        daemon=True
+    )
     worker_thread.start()
-    
+
+def start_app():
+    """Chạy độc lập (chỉ dùng khi chạy riêng file này)"""
+    start_background()
+
     print("=" * 50)
     print("SunWin AI Prediction API")
     print(f"Port: {PORT}")
     print(f"Endpoint: http://0.0.0.0:{PORT}/lc79md5")
     print("Thuật toán: AI Pro Max v3.1 - 7 thuật toán nâng cao")
     print("=" * 50)
-    
-    # Khởi động server
+
     app.run(host="0.0.0.0", port=PORT, debug=False)
+
+
+if __name__ == "__main__":
+    start_app()
