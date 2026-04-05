@@ -2,6 +2,7 @@ import json
 import time
 import random
 import math
+import os
 from datetime import datetime
 from typing import Dict, List, Any, Optional
 import requests
@@ -15,7 +16,7 @@ app = Flask(__name__)
 
 # ================== CẤU HÌNH ==================
 API_URL = "https://wtx.tele68.com/v1/tx/sessions"
-PORT = 8367
+PORT = int(os.environ.get("PORT", 10000))
 
 # Tắt cảnh báo SSL
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -554,4 +555,5 @@ def start_app():
 
 
 if __name__ == "__main__":
-    start_app()
+    start_background()
+    app.run(host="0.0.0.0", port=PORT)
