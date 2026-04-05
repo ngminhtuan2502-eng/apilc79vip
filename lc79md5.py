@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 # ================== CẤU HÌNH ==================
 API_URL = "https://wtxmd52.tele68.com/v1/txmd5/sessions"
-PORT = 2345
+PORT = int(os.environ.get("PORT", 10000))
 
 # Tắt cảnh báo SSL
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
