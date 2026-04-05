@@ -1,14 +1,20 @@
 from flask import Flask, jsonify
+import os
 import lc79hu
 import lc79md5
 
 app = Flask(__name__)
 
-# chạy worker nền (nếu có)
-lc79hu.start_background()
-lc79md5.start_background()
+# ================== CHỈ CHẠY WORKER 1 LẦN ==================
+if os.environ.get("RUN_MAIN") == "true" or os.environ.get("RENDER") != "true":
+    try:
+        lc79hu.start_background()
+        lc79md5.start_background()
+        print("✅ Background workers started")
+    except Exception as e:
+        print("❌ Worker error:", e)
 
-# ===== API =====
+# ================== API ==================
 
 @app.route('/')
 def home():
@@ -29,7 +35,7 @@ def lchu():
 
 @app.route('/lc79md5')
 def md5():
-    return lc79md5.api_md5()
+    return lc79md5.api_lc79md5()  # ✅ FIX TÊN
 
 
 @app.route('/run-all')
@@ -41,8 +47,7 @@ def run_all():
     })
 
 
-# ===== CHẠY SERVER =====
+# ================== RUN ==================
 if __name__ == '__main__':
-    import os
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
